@@ -1,7 +1,9 @@
 import React from 'react';
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import MicIcon from '@material-ui/icons/Mic';
-import { Button } from '@material-ui/core';
-import Axios, { AxiosInstance, AxiosPromise } from 'axios'
+import { Button, Card } from '@material-ui/core';
+import Axios, { AxiosInstance, AxiosPromise } from 'axios';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export interface MicrophoneTabProps {
 
@@ -11,6 +13,7 @@ export interface MicrophoneTabState {
     href: any;
     download: string;
     running: boolean;
+    loading: boolean;
 }
 
 export const apiConfig = {
@@ -35,6 +38,7 @@ export class MicrophoneTab extends React.Component<MicrophoneTabProps, Microphon
         super(props);
         this.state = {
             running: false,
+            loading: false,
             href: null,
             download: null
         };
@@ -42,20 +46,34 @@ export class MicrophoneTab extends React.Component<MicrophoneTabProps, Microphon
     }
 
     render() {
-        return <div>
-            <a id="download" href={this.state.href} download={this.state.download}>Download</a>
-            <Button variant='contained' color='secondary' startIcon={<MicIcon/>} onClick={(e) => {
-                if ( this.state.running) {
-                    this.stopRecord();
-                } else {
-                    this.startRecord();
-                    this.setState({
-                        running: true
-                    });
-                }
-            }}>
-                {this.state.running ? 'Stop' : 'Record'}
-            </Button>
+        return <div className='record-container'>
+            <Card className='card'>
+                <div className='top-half-card'>
+                    <div className='detail-text'><span>Callsigns are:</span>Torch, Inferno, Fiend, Sheep, Devil and Rebel</div>
+                    <div className='detail-text'><span>Airplanes are:</span>F-18, F-14, F-16, tomcat and hornet</div>
+                    <div className='detail-text'><span>Runways are:</span>3L, 3R, 21L and 21R (say Right or Left!)</div>
+                </div>
+                <div className='bottom-half-card'>
+                <Button className='samesizebutton' variant='contained' color='primary' startIcon={<MicIcon/>} onClick={(e) => {
+                    if ( this.state.running) {
+                        this.stopRecord();
+                    } else {
+                        this.startRecord();
+                        this.setState({
+                            running: true
+                        });
+                    }
+                }}>
+                    {this.state.running ? 'Stop' : 'Record'}
+                </Button>
+                {this.state.loading && <CircularProgress className='progress' size={50}></CircularProgress>}
+                <Button className='samesizebutton' variant='contained' color='secondary' startIcon={<CloudDownloadIcon/>} disabled>Download</Button>
+                </div>
+            </Card>
+            <Card className='card-thin'>
+                <span>Say something like: </span>
+                Nellis Tower, Inferno 1 is a flight of 4 F-18s, ready to taxi to runway 3L.
+            </Card>
         </div>;
     }
 
@@ -92,13 +110,40 @@ export class MicrophoneTab extends React.Component<MicrophoneTabProps, Microphon
         console.log('stopped...');
         let blob = new Blob(this._recordedChunks);
         this.setState({
-            href: URL.createObjectURL(blob),
-            download: 'acetest.wav',
+            // href: URL.createObjectURL(blob),
+            // download: 'acetest.wav',
             running: false
         });
         let formdata = new FormData();
         formdata.append('recorded', blob, 'audio');
-        Axios.post('http://localhost:3001/sendaudio', formdata)
+        this.setState({
+            loading: true
+        });
+        Axios.post('http://localhost:5000/sendaudio', formdata, {
+            responseType: 'blob',
+            headers: {'Access-Control-Allow-Origin': '*'}
+        }).then((response) => {
+            this.setState({
+                loading: false
+            });
+            console.log(response);
+            let x = new Blob([response.data], {
+                type: 'audio/wav'
+            })
+            let blobObj = URL.createObjectURL(x);
+            let player: HTMLAudioElement = new Audio(blobObj);
+            player.play();
+            this.setState({
+                href: blobObj,
+                download: 'result.wav',
+                running: false
+            });
+        }).catch(e => {
+            this.setState({
+                loading: false
+            });
+            console.log(e);
+        })
         
     }
 

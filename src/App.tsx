@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from './logo.svg';
-import { Button } from '@material-ui/core';
+import { Button, Card } from '@material-ui/core';
 import './App.css';
 import { PlayerTab } from './components/PlayerTab';
 import { MicrophoneTab } from './components/MicrophoneTab';
@@ -12,13 +12,8 @@ function App() {
 
   return (
     <div className="App">
-      <a id="download">Download</a>
-      <button id="stop" onClick={function() {
-      shouldStop = true;
-    }}>Stop</button>
-      <PlayerTab></PlayerTab>
+      <h1>ATC like Real</h1>
       <MicrophoneTab></MicrophoneTab>
-      <Button variant="contained" color="primary">Hello World</Button>
     </div>
   );
 }
