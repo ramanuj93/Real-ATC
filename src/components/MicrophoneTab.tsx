@@ -2,7 +2,7 @@ import React from 'react';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import MicIcon from '@material-ui/icons/Mic';
 import { Button, Card } from '@material-ui/core';
-import Axios, { AxiosInstance, AxiosPromise } from 'axios';
+import Axios from 'axios';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 export interface MicrophoneTabProps {
