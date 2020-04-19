@@ -18,7 +18,7 @@ export interface MicrophoneTabState {
 
 export const apiConfig = {
     timeout: 30000,
-    baseURL: "https://localhost:3001/sendaudio",
+    baseURL: "http://realatc.azurewebsites.net/sendaudio",
     headers: {
         common: {
             "Cache-Control": "no-cache, no-store, must-revalidate",
@@ -119,7 +119,7 @@ export class MicrophoneTab extends React.Component<MicrophoneTabProps, Microphon
         this.setState({
             loading: true
         });
-        Axios.post('http://localhost:5000/sendaudio', formdata, {
+        Axios.post('http://realatc.azurewebsites.net/sendaudio', formdata, {
             responseType: 'blob',
             headers: {'Access-Control-Allow-Origin': '*'}
         }).then((response) => {
