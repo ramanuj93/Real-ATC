@@ -12,10 +12,13 @@ COPY package.json ./
 COPY package-lock.json ./
 RUN npm install --silent
 RUN npm install react-scripts@3.4.1 -g --silent
+RUN npm install pm2 -g
+
+EXPOSE 80
 
 # add app
 COPY . ./
 
 
 # start app
-CMD ["npm", "start"]
+CMD ["pm2-runtime", "start", "ecosystem.config.js"]

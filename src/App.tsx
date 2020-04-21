@@ -3,7 +3,6 @@ import './App.css';
 import { MicrophoneTab } from './components/MicrophoneTab';
 
 function App() {    
-
   return (
     <div className="App">
       <h1>ATC like Real</h1>

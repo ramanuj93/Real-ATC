@@ -16,18 +16,17 @@ export interface MicrophoneTabState {
     loading: boolean;
 }
 
-export const apiConfig = {
-    timeout: 30000,
-    baseURL: "http://realatc.azurewebsites.net/sendaudio",
-    headers: {
-        common: {
-            "Cache-Control": "no-cache, no-store, must-revalidate",
-            Pragma: "no-cache",
-            "Content-Type": "application/json",
-            Accept: "application/json",
-        },
-    }
-}
+// export const apiConfig = {
+//     timeout: 30000,
+//     headers: {
+//         common: {
+//             "Cache-Control": "no-cache, no-store, must-revalidate",
+//             Pragma: "no-cache",
+//             "Content-Type": "application/json",
+//             Accept: "application/json",
+//         },
+//     }
+// }
 
 export class MicrophoneTab extends React.Component<MicrophoneTabProps, MicrophoneTabState> {
 
@@ -119,7 +118,8 @@ export class MicrophoneTab extends React.Component<MicrophoneTabProps, Microphon
         this.setState({
             loading: true
         });
-        Axios.post('http://realatc.azurewebsites.net/sendaudio', formdata, {
+        
+        Axios.post('https://realatc.azurewebsites.net/sendaudio', formdata, {
             responseType: 'blob',
             headers: {'Access-Control-Allow-Origin': '*'}
         }).then((response) => {
