@@ -119,7 +119,7 @@ export class MicrophoneTab extends React.Component<MicrophoneTabProps, Microphon
             loading: true
         });
         
-        Axios.post('https://realatc.azurewebsites.net/sendaudio', formdata, {
+        Axios.post('http://0.0.0.0:5000/sendaudio', formdata, {
             responseType: 'blob',
             headers: {'Access-Control-Allow-Origin': '*'}
         }).then((response) => {
