@@ -102,3 +102,11 @@
 .progress {
   color: green;
 }
+
+.aircraft-table-head {
+  background-color: #3a3a3a;
+}
+
+.MuiTableRow-head .light-color {
+  color: #efefef;
+}

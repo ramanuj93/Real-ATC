@@ -143,7 +143,7 @@ export class MicrophoneTab extends React.Component<MicrophoneTabProps, Microphon
                 loading: false
             });
             console.log(e);
-        })
+        });
         
     }
 
